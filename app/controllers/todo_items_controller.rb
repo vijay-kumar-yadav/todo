@@ -6,14 +6,12 @@ class TodoItemsController < ApplicationController
     redirect_to @todo_list
    end
    def destroy
-    @todo_item = @todo_list.todo_items.find(params[:id])
-    if @todo_item.destroy
-     flash[:success] = "Todo List item was deleted."
-    else
-     flash[:error] = "Todo List item could not be deleted."
+    @todo_list.destroy
+    respond_to do |format|
+      format.html { redirect_to root_url, notice: 'Todo list was successfully destroyed.' }
+      format.json { head :no_content }
     end
-    redirect_to @todo_list 
-   end
+  end
    def complete
     @todo_item.update_attribute(:completed_at, Time.now)
     redirect_to @todo_list, notice: "Todo item completed"
